@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import ProtectedRoute from "../../components/ProtectedRoute";
-import { useDispatch, useSelector } from "react-redux";
 import { fetchUsers, deleteUser } from "@/features/users/userSlice";
 import toast from "react-hot-toast";
 import EditUserModal from "../../components/EditUserModal";
@@ -9,12 +8,14 @@ import SideBar from "../../components/SideBar";
 import * as XLSX from "xlsx";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
+import { useAppDispatch, useAppSelector } from "../../hooks/Page";
+
 
 const DashBoard = () => {
-  const dispatch = useDispatch();
-  const { users, loading, error } = useSelector((state) => state.users);
+  const dispatch = useAppDispatch();
+  const { users, loading, error } = useAppSelector((state) => state.users);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectorUser, setSelectorUser] = useState(null);
+  const [selectorUser, setSelectorUser] = useState<any>(null);
   const [sortlogic, setSortLogic] = useState({ key: "id", direction: "asc" });
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -25,18 +26,18 @@ const DashBoard = () => {
   if (loading) return <div>...loading</div>;
   if (error) return <div> Error :{error}</div>;
 
-  const handleDelete = (id) => {
+  const handleDelete = (id : number) => {
     dispatch(deleteUser(id));
     toast.success("user deleted successfully");
   };
 
-  const handleEdit = (user) => {
+  const handleEdit = (user : string) => {
     setSelectorUser(user);
     setIsModalOpen(true);
   };
 
   const filteredUsers = users.filter(
-    (user) =>
+    (user : any) =>
       user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -49,7 +50,7 @@ const DashBoard = () => {
     return 0;
   });
 
-  const handleSort = (key) => {
+  const handleSort = (key : any) => {
     setSortLogic((prev) => ({
       key,
       direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
@@ -62,7 +63,7 @@ const DashBoard = () => {
   const currentUsers = sortedUsers.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(sortedUsers.length / itemsPerPage);
 
-  const exportData = users.map((user) => ({
+  const exportData = users.map((user : any) => ({
     ID: user.id,
     Name: user.name,
     Email: user.email,
@@ -129,7 +130,7 @@ const DashBoard = () => {
                 </tr>
               </thead>
               <tbody>
-                {currentUsers.map((user) => (
+                {currentUsers.map((user : any) => (
                   <tr
                     key={user.id}
                     className="border-b border-gray-700 hover:bg-gray-700"
