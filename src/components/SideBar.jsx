@@ -36,6 +36,7 @@ const SideBar = () => {
         </div>
 
         <ul className="space-y-3 text-gray-200">
+          
           <li>
             <Link
               href="/dashboard"
@@ -52,6 +53,15 @@ const SideBar = () => {
               onClick={() => setIsOpen(false)}
             >
               Charts
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/login"
+              className="block px-4 py-2 font-medium rounded-md hover:bg-gray-700"
+              onClick={() => setIsOpen(false)}
+            >
+              LogOut
             </Link>
           </li>
         </ul>
